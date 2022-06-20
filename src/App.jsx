@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import "./styles.css";
+import { InputTodo } from "./components/InputTodo";
+import { IncompleteTodos } from "./components/IncompleteTodos";
+import { CompleteTodos } from "./components/CompleteTodos";
 
 export const App = () => {
   // ユーザーが入力した値を管理
@@ -12,7 +15,7 @@ export const App = () => {
   const [completeTodos, setCompleteTodos] = useState([]);
 
   // TODO追加で入力した情報を反映
-  const onChnageTodoText = (event) => setTodoText(event.target.value);
+  const onChangeTodoText = (event) => setTodoText(event.target.value);
   // 追加
   const onClickAdd = () => {
     if (todoText === "") return;
@@ -51,41 +54,17 @@ export const App = () => {
 
   return (
     <>
-      <div className="input-area">
-        <input
-          placeholder="TODOを追加"
-          value={todoText}
-          onChange={onChnageTodoText}
-        />
-        <button onClick={onClickAdd}>追加</button>
-      </div>
-      <div className="incomplete-area">
-        <p className="title">未完了のTODO</p>
-        <ul>
-          {incompleteTodos.map((todo, index) => {
-            return (
-              <div key={index} className="list-row">
-                <li>{todo}</li>
-                <button onClick={() => onclickComplete(index)}>完了</button>
-                <button onClick={() => onclickDelete(index)}>削除</button>
-              </div>
-            );
-          })}
-        </ul>
-      </div>
-      <div className="complete-area">
-        <p className="title">完了済みのTODO</p>
-        <ul>
-          {completeTodos.map((todo, index) => {
-            return (
-              <div key={index} className="list-row">
-                <li>{todo}</li>
-                <button onClick={() => onclickBack(index)}>戻す</button>
-              </div>
-            );
-          })}
-        </ul>
-      </div>
+      <InputTodo
+        todoText={todoText}
+        onClick={onClickAdd}
+        onChange={onChangeTodoText}
+      />
+      <IncompleteTodos
+        incompleteTodos={incompleteTodos}
+        onclickComplete={onclickComplete}
+        onclickDelete={onclickDelete}
+      />
+      <CompleteTodos completeTodos={completeTodos} onclickBack={onclickBack} />
     </>
   );
 };
